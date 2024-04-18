@@ -41,7 +41,7 @@
         <div class="row">
 
             <div class="col-sm-12 col-lg-12 mb-4">
-                <h2> Driver's Information</h2>
+                <h2> Hi Driver Information</h2>
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
