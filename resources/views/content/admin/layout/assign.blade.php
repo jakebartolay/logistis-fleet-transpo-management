@@ -1,0 +1,155 @@
+@php
+    $configData = Helper::appClasses();
+@endphp
+
+@extends('layouts/layoutMaster')
+
+@section('title', 'Assign')
+
+@include('layouts/notification')
+
+@section('content')
+
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h4>Driver Information:</h4>
+                        </div>
+                        @if ($errors->any())
+                            @foreach ($errors->all() as $error)
+                                <p style="color:red;">{{ $error }}</p>
+                            @endforeach
+                        @endif
+
+                        @if (session('error'))
+                        <div id="errorNotification" class="notification show error">
+                            <span class="message">{{ session('error') }}</span>
+                            <button class="close-btn" onclick="hideErrorNotification()">X</button>
+                        </div>
+                        <script>
+                        // Set the duration (in milliseconds) for the error notification to be displayed
+                        var duration = 5000; // 5 seconds (adjust as needed)
+
+                        // Function to hide the error notification after the specified duration
+                        function hideErrorNotification() {
+                            var errorNotification = document.getElementById('errorNotification');
+                            errorNotification.style.display = 'none';
+                        }
+
+                        // Hide the error notification after the specified duration
+                        setTimeout(hideErrorNotification, duration);
+                        </script>
+                        @endif   
+                        <form action="{{ route('assignSuccess') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $driver->id }}">
+                            <p>ID: {{ $driver->id }}</p>
+                            <p>Name: {{ $driver->firstname }} {{ $driver->lastname }}</p>
+                            <p>DL Code:
+                                @if (in_array($driver->dlcodes, [1, 2, 3, 4, 5, 6, 7]))
+                                    {{ $dlCode->codes }} - {{ $dlCode->name }}
+                                @endif
+                            </p>
+                            <label for="cars">Choose a vehicle:</label>
+                            <select id="cars" name="vehicle_type">
+                            @if ($driver->dlcodes == 1)
+                                @php $motorcycleExists = false; @endphp
+                                @foreach ($vehicles as $vehicle)
+                                    @if ($vehicle->vehicle_type == 'Motorcycle' && $vehicle->status != 'unavailable')
+                                        <option value="Motorcycle">{{ $vehicle->vehicle_brand }} - Motorcycle</option>
+                                        @php $motorcycleExists = true; @endphp
+                                    @endif
+                                @endforeach
+                                @if (!$motorcycleExists)
+                                    <option value="">No motorcycle found</option>
+                                @endif                          
+                            @elseif ($driver->dlcodes == 2)
+                                @php $sedanExists = false; @endphp
+                                @foreach ($vehicles as $vehicle)
+                                    @if ($vehicle->vehicle_type == 'Sedan' && $vehicle->status != 'unavailable')
+                                        <option value="Sedan">{{ $vehicle->vehicle_brand }} - Sedan</option>
+                                        @php $sedanExists = true; @endphp
+                                    @endif
+                                @endforeach
+                                @if (!$sedanExists)
+                                    <option value="">No vehicle found</option>
+                                @endif
+                            @elseif ($driver->dlcodes == 3)
+                                @php $sedanExists = false; @endphp
+                                @foreach ($vehicles as $vehicle)
+                                    @if ($vehicle->vehicle_type == 'SUV' && $vehicle->status != 'unavailable')
+                                        <option value="SUV">{{ $vehicle->vehicle_brand }} - SUV</option>
+                                        @php $sedanExists = true; @endphp
+                                    @endif
+                                @endforeach
+                                @if (!$sedanExists)
+                                    <option value="">No vehicle found</option>
+                                @endif
+                            @elseif ($driver->dlcodes == 4)
+                                @php $sedanExists = false; @endphp
+                                @foreach ($vehicles as $vehicle)
+                                    @if ($vehicle->vehicle_type == 'Sedan' && $vehicle->status != 'unavailable')
+                                        <option value="Sedan">{{ $vehicle->vehicle_brand }} - Sedan</option>
+                                        @php $sedanExists = true; @endphp
+                                    @endif
+                                @endforeach
+                                @if (!$sedanExists)
+                                    <option value="">No vehicle found</option>
+                                @endif
+                            @elseif ($driver->dlcodes == 5)
+                                @php $sedanExists = false; @endphp
+                                @foreach ($vehicles as $vehicle)
+                                    @if ($vehicle->vehicle_type == 'SUV' && $vehicle->status != 'unavailable')
+                                        <option value="SUV">{{ $vehicle->vehicle_brand }} - SUV</option>
+                                        @php $sedanExists = true; @endphp
+                                    @endif
+                                @endforeach
+                                @if (!$sedanExists)
+                                    <option value="">No vehicle found</option>
+                                @endif
+                            @elseif ($driver->dlcodes == 6)
+                                @php $sedanExists = false; @endphp
+                                @foreach ($vehicles as $vehicle)
+                                    @if ($vehicle->vehicle_type == 'Truck' && $vehicle->status != 'unavailable')
+                                        <option value="Truck">{{ $vehicle->vehicle_brand }} - Sedan</option>
+                                        @php $sedanExists = true; @endphp
+                                    @endif
+                                @endforeach
+                                @if (!$sedanExists)
+                                    <option value="">No vehicle found</option>
+                                @endif
+                            @elseif ($driver->dlcodes == 7)
+                                @php $sedanExists = false; @endphp
+                                @foreach ($vehicles as $vehicle)
+                                    @if ($vehicle->vehicle_type == 'Sedan' && $vehicle->status != 'unavailable')
+                                        <option value="Sedan">{{ $vehicle->vehicle_brand }} - Sedan</option>
+                                        @php $sedanExists = true; @endphp
+                                    @endif
+                                @endforeach
+                                @if (!$sedanExists)
+                                    <option value="">No vehicle found</option>
+                                @endif
+                                <!-- Add similar logic for other vehicle types -->
+                            @else
+                                @foreach ($vehicles as $vehicle)
+                                    <option value="{{ $vehicle->vehicle_type }}">{{ $vehicle->vehicle_brand }} -
+                                        {{ $vehicle->vehicle_type }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <div class="card-footer text-end">
+                            <button type="submit" class="btn btn-primary">Confirm</button>
+                            <a href="{{ route('drivers') }}" class="btn btn-warning">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@endsection

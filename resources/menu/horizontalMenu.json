@@ -1,0 +1,40 @@
+{
+  "menu": [
+    {
+      "url": "admin/dashboard",
+      "icon": "menu-icon tf-icons ti ti-dashboard",
+      "name": "Dashboard",
+      "slug": "admin.dashboard"
+    },
+    {
+      "url": "admin/schedule",
+      "icon": "menu-icon ti ti-calendar-event",
+      "name": "Schedule",
+      "slug": "schedule"
+    },
+    {
+      "url": "admin/operator",
+      "icon": "menu-icon tf-icons ti ti-user-check",
+      "name": "Assigned",
+      "slug": "operator"
+    },
+    {
+      "url": "admin/drivers",
+      "icon": "menu-icon ti ti-users",
+      "name": "Driver's List",
+      "slug": "drivers"
+    },
+    {
+      "url": "admin/vehicles-information",
+      "icon": "menu-icon tf-icons ti ti-truck",
+      "name": "Vehicles Information",
+      "slug": "vehicles-information"
+    },
+    {
+      "url": "admin/reports",
+      "icon": "menu-icon ti ti-report-analytics",
+      "name": "Reports",
+      "slug": "report"
+    }
+  ]
+}

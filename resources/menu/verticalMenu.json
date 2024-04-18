@@ -1,0 +1,34 @@
+{
+  "menu": [
+    {
+      "url": "driver/dashboard",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons ti ti-smart-home",
+      "slug": "user.dashboard"
+    },
+    {
+      "url": "driver/map",
+      "name": "Map",
+      "icon": "menu-icon tf-icons ti ti-map-2",
+      "slug": "map"
+    },
+    {
+      "url": "driver/assignments",
+      "icon": "menu-icon tf-icons ti ti-checkup-list",
+      "name": "Assignments",
+      "slug": "assignments"
+    },
+    {
+      "url": "driver/driver-report",
+      "name": "Report",
+      "icon": "menu-icon tf-icons ti ti-message-report",
+      "slug": "user.report"
+    },
+    {
+      "url": "driver/faq",
+      "name": "Faq",
+      "icon": "menu-icon tf-icons ti ti-message-report",
+      "slug": "user.faq"
+    }
+  ]
+}
