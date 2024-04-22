@@ -41,20 +41,28 @@
         <div class="row">
 
             <div class="col-sm-12 col-lg-12 mb-4">
-                <h2> Hi Driver Information</h2>
+                <h2>Driver Information</h2>
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
                             <div class="card-body">
                                 <form action="" method="GET">
-                                    <div
-                                        class="row d-flex align-content-center align-self-center justify-center align-items-center">
-                                        <div class="col-md-2">
-                                            <input type="search" class="form-control" id="searchInput" name="searchInput"
-                                                placeholder="Enter name...">
-                                        </div>
+                                    <div class="row">
+                                        <div class="row align-items-center justify-content-start">
+                                            <div class="col-md-2">
+                                                <input type="search" class="form-control" id="searchInput"
+                                                    name="searchInput" placeholder="Search name...">
+                                            </div>
 
-                                        <div class="col-md-2">
+                                            <div class="d-flex justify-content-end">
+                                                <a href="{{ route('print') }}" target="_blank"
+                                                    class="btn btn-primary btn-sm">
+                                                    <i class="tf-icons ti ti-download">PDF</i>
+                                                </a>
+                                            </div>
+
+
+                                            {{-- <div class="col-md-2">
                                             <select class="form-select" name="filter-status">
                                                 <option value="">Select All </option>
                                                 <option value="active"
@@ -66,13 +74,13 @@
                                                     Unavailable
                                                 </option>
                                             </select>
-                                        </div>
+                                        </div> --}}
 
 
-                                        <div class="col-md-2">
+                                            {{-- <div class="col-md-2">
                                             <button type="submit" class="btn btn-primary btn-md badge">Filter</button>
+                                        </div> --}}
                                         </div>
-                                    </div>
                                 </form>
 
                                 <br>
@@ -135,13 +143,15 @@
                                     <div class="d-flex justify-content-end">
                                         {{ $drivers->links() }}
                                     </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
+
+
 @endsection

@@ -53,13 +53,19 @@ use App\Http\Controllers\pages\LMSG44RouteController;
       // Admin Routes
       Route::get('admin/dashboard', [Admin::class, 'dashboard'])->name('admin.dashboard');
 
-      //DELIVERY LIST
-      // Route::get('admin/order', [Admin::class, 'deliveryList'])->name('delivery');
+      // Print
+      Route::get('admin/print', [Admin::class, 'print'])->name('print');
+
+      //Order and Routes
+      Route::get('admin/order-and-routes', [Admin::class, 'orderRoute'])->name('order-and-routes');
+
+
       //SCHEDULE
 
       Route::get('admin/delivery-scheduling', [Admin::class, 'scheduling'])->name('delivery-scheduling');
-
+        
       Route::get('admin/schedule', [Admin::class, 'schedule'])->name('schedule');
+      Route::post('saveSchedule', [Admin::class, 'saveSchedule'])->name('saveSchedule');
 
       // Route::get('admin/add-schedule', [Admin::class, 'addsched'])->name('add-schedule');
       Route::get('admin/add-schedule', [Admin::class, 'newSchedule'])->name('new.schedule');
@@ -83,8 +89,9 @@ use App\Http\Controllers\pages\LMSG44RouteController;
       Route::get('admin/fuels-report', [Admin::class, 'fuelReport'])->name('fuels-report');
       Route::get('admin/incident-report', [Admin::class, 'incidents'])->name('incident-report');
 
-
-
+      // Add Vehicle
+      Route::post('addVehicle', [Admin::class, 'addVehicle'])->name('addVehicle');
+      
       //Sorted out
       Route::get('admin/sorted-out', [Admin::class, 'sort'])->name('sorted-out');
 

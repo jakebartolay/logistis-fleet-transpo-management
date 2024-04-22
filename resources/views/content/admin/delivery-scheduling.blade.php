@@ -25,79 +25,79 @@
 @section('content')
 
 
-        <div class="row">
-            <div class="col">
-                <h1>Schedule's List </h1>
-            </div>
+    <div class="row">
+        <div class="col">
+            <h1>Schedule's List </h1>
+        </div>
 
-            {{-- <div class="col-auto d-flex align-self-center items-center">
+        {{-- <div class="col-auto d-flex align-self-center items-center">
                 <a href="{{ route('new.schedule') }}" class="btn btn-sm btn-outline-primary"><span class="text-end">Add
                         Schedule</span></a>
             </div> --}}
 
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-datatable table-responsive pt-0">
-                            <table class="dataTables table">
-                                <thead>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-datatable table-responsive pt-0">
+                        <table class="dataTables table">
+                            <thead>
+                                <tr>
+                                    <th><strong>ID</strong></th>
+                                    <th><strong>Order ID</strong></th>
+                                    <th><strong>From</strong></th>
+                                    <th><strong>To</strong></th>
+                                    <th><strong>R.PHONE</strong></th>
+                                    <th><strong>Address</strong></th>
+                                    <th><strong>Price</strong></th>
+                                    <th><strong>Starting Date</strong></th>
+                                    <th><strong>End Date</strong></th>
+                                    <th><strong>Status</strong></th>
+                                    <th><strong>Operator</strong></th>
+                                    <th><strong>Action</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($schedules as $schedule)
                                     <tr>
-                                        <th><strong>ID</strong></th>
-                                        <th><strong>Order ID</strong></th>
-                                        <th><strong>From</strong></th>
-                                        <th><strong>To</strong></th>
-                                        <th><strong>R.PHONE</strong></th>
-                                        <th><strong>Address</strong></th>
-                                        <th><strong>Price</strong></th>
-                                        <th><strong>Starting Date</strong></th>
-                                        <th><strong>End Date</strong></th>
-                                        <th><strong>Status</strong></th>
-                                        <th><strong>Operator</strong></th>
-                                        <th><strong>Action</strong></th>
+                                        <th>{{ $schedule->id }}</th>
+                                        <td>{{ $schedule->schedule_id }}</td>
+                                        <td>{{ $schedule->start_point }}</td>
+                                        <td>{{ $schedule->waypoints }}</td>
+                                        <td>{{ $schedule->end_point }}</td>
+                                        <td>
+                                            @if ($schedule->status == 'pending')
+                                                <span class="badge bg-warning">{{ $schedule->status }}</span>
+                                            @elseif($schedule->status == 'in_transit')
+                                                <span class="badge bg-info">Transit</span>
+                                            @elseif($schedule->status == 'delivered')
+                                                <span class="badge bg-success">{{ $schedule->status }}</span>
+                                            @elseif($schedule->status == 'cancelled')
+                                                <span class="badge bg-danger">{{ $schedule->status }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($schedule->user_id)
+                                                <img src="{{ asset('path/to/your/image.jpg') }}" alt="No Operator Image"
+                                                    class="h-auto rounded-circle">
+                                            @else
+                                                No operator found
+                                            @endif
+
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary badge" data-bs-toggle="modal"
+                                                data-bs-target="#addNewCCModal"> Assign </button>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($schedules as $schedule)
-                                        <tr>
-                                            <th>{{ $schedule->id }}</th>
-                                            <td>{{ $schedule->schedule_id }}</td>
-                                            <td>{{ $schedule->start_point }}</td>
-                                            <td>{{ $schedule->waypoints }}</td>
-                                            <td>{{ $schedule->end_point }}</td>
-                                            <td>
-                                                @if ($schedule->status == 'pending')
-                                                    <span class="badge bg-warning">{{ $schedule->status }}</span>
-                                                @elseif($schedule->status == 'in_transit')
-                                                    <span class="badge bg-info">Transit</span>
-                                                @elseif($schedule->status == 'delivered')
-                                                    <span class="badge bg-success">{{ $schedule->status }}</span>
-                                                @elseif($schedule->status == 'cancelled')
-                                                    <span class="badge bg-danger">{{ $schedule->status }}</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($schedule->user_id)
-                                                    <img src="{{ asset('path/to/your/image.jpg') }}" alt="No Operator Image"
-                                                        class="h-auto rounded-circle">
-                                                @else
-                                                    No operator found
-                                                @endif
+                                @endforeach
 
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary badge" data-bs-toggle="modal"
-                                                    data-bs-target="#addNewCCModal"> Assign </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
 
 @endsection

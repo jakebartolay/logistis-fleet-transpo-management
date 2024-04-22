@@ -17,7 +17,10 @@ use App\Models\MaintenanceSchedule;
 use App\Models\IncidentReport;
 use Carbon\Carbon;
 use App\Models\Delivery;
+use App\Models\route;
 use App\Models\Driver;
+use App\Models\Sched;
+use App\Models\DriverInfo;
 use App\Models\LMSG43RequestMro;
 use Illuminate\Support\Facades\Log;
 use Hash;
@@ -105,7 +108,48 @@ class Admin extends Controller
         $vehicle = VehicleInfo::findOrFail($id);
         return view('content.admin.vehicles-information', compact('user', 'vehicle'));
     }
-    
+
+    public function addVehicle(Request $request)
+    {
+
+        // dd($request->all());
+
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'vehicle_id' => 'required|integer',
+            'year_model' => 'required|integer',
+            'vehicle_type' => 'required|string',
+            'vehicle_brand' => 'required|string',
+            'plate_number' => 'required|string|unique:lms_g43_vehicle_info',
+            'load_capacity' => 'required|numeric',
+            'status' => 'required|in:available,unavailable', // Ensure status matches enum values
+            // 'profile_photo_path' => 'nullable|string', // Assuming profile_photo_path is optional
+            'engine_number' => 'required|string|unique:lms_g43_vehicle_info',
+            'chassis_number' => 'required|string|unique:lms_g43_vehicle_info',
+        ]);
+
+       
+
+        // Create a new vehicle instance
+        $vehicle = new VehicleInfo();
+        $vehicle->vehicle_id = $validatedData['vehicle_id'];
+        $vehicle->year_model = $validatedData['year_model'];
+        $vehicle->vehicle_brand = $validatedData['vehicle_brand'];
+        $vehicle->vehicle_type = $validatedData['vehicle_type'];
+        $vehicle->plate_number = $validatedData['plate_number'];
+        $vehicle->load_capacity = $validatedData['load_capacity'];
+        $vehicle->status = $validatedData['status'];
+        // $vehicle->profile_photo_path = $validatedData['profile_photo_path'];
+        $vehicle->engine_number = $validatedData['engine_number'];
+        $vehicle->chassis_number = $validatedData['chassis_number'];
+
+        // Save the new vehicle
+        $vehicle->save();
+
+        // Redirect back or to a success page
+        return redirect()->route('content.admin.vehicles-information')->with('success', 'Vehicle added successfully.');
+    }
+
     public function maintenance()
     {
         $user = Auth::user();
@@ -336,32 +380,32 @@ class Admin extends Controller
 
     public function schedMaintenance(Request $request)
     {
-        // Validate the incoming request data
+       
         $validatedData = $request->validate([
             'vehicle_type' => 'required|string',
             'engine_no' => 'required|string',
             'issues' => 'required|string',
-            'status' => 'required|string', // Include status in validation
+            'status' => 'required|string', 
             'date_issue' => 'required|date',
             'vehicle_odometer' => 'required|numeric',
             'start_date' => 'nullable|date',
             'completion_date' => 'nullable|date',
         ]);
         
-        // Create a new instance of the model
+        
         $service = new MaintenanceSchedule();
 
-        // Set attributes with validated data
+    
         $service->vehicle_type = $validatedData['vehicle_type'];
         $service->engine_no = $validatedData['engine_no'];
         $service->issues = $validatedData['issues'];
-        $service->status = $validatedData['status']; // Set status
+        $service->status = $validatedData['status'];
         $service->date_issue = $validatedData['date_issue'];
         $service->vehicle_odometer = $validatedData['vehicle_odometer'];
         $service->start_date = $validatedData['start_date'] ?? now();
         $service->completion_date = $validatedData['completion_date'];
 
-        // Save the service to the database
+      
         $service->save();
             
         return redirect()->route('service')->with('success', 'Vehicle Maintenance submitted successfully.');
@@ -476,13 +520,63 @@ class Admin extends Controller
         return view('content.admin.sorted-out');
     }
 
+    public function orderRoute()
+    {
+        
+        $delivery = Delivery::paginate(7);
+        $routes = route::paginate(7);
+        return view('content.admin.order-and-routes', compact('delivery','routes'));
+    }
+
     public function schedule()
     {
         
        
-        $delivery = Delivery::paginate(5);
-        return view('content.admin.schedule', compact('delivery'));
+        $delivery = Delivery::all();
+        $operators = Operator::all();
+        $routes = route::all();
+        return view('content.admin.schedule', compact('delivery','operators','routes'));
     }
+
+   
+
+    public function saveSchedule(Request $request)
+{
+    
+    dd($request->all());
+    $validatedData = $request->validate([
+        'route_name' => 'required|string',
+        'status' => 'required|string',
+        'order_id' => 'required|integer',
+        'contact_person' => 'required|string',
+        'shipping_address' => 'required|string',
+        'vehicle_type' => 'required|string',
+        'first_name' => 'required|string',
+        'last_name' => 'required|string',
+        'shipment_date' => 'required|date', 
+    ]);
+
+  
+    $schedule = new Sched();
+
+    $schedule->route_name = $validatedData['route_name'];
+    $schedule->status = $validatedData['status'];
+    $schedule->order_id = $validatedData['order_id'];
+    $schedule->contact_person = $validatedData['contact_person'];
+    $schedule->shipping_address = $validatedData['shipping_address'];
+    $schedule->vehicle_type = $validatedData['vehicle_type'];
+    $schedule->first_name = $validatedData['first_name'];
+    $schedule->last_name = $validatedData['last_name'];
+    $schedule->shipment_date = $validatedData['shipment_date']; 
+
+    
+    $schedule->save();
+    
+
+    
+    return redirect()->route('schedule');
+}
+
 
     public function chat(Request $request, $receiverId)
     {
@@ -549,7 +643,11 @@ class Admin extends Controller
         return $response->json();
     }
 
-    
+    public function print()
+    {
+        $drives = DriverInfo::all();
+        return view('content.admin.print',compact('drives'));
+    }
     
 }
     
